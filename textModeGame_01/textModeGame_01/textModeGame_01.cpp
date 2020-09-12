@@ -3,11 +3,7 @@
 
 #include <iostream>
 #include <windows.h>
-
-void draw_ship()
-{
-    std::cout<<(" <-0-> ");
-}
+#include <conio.h>
 
 void gotoxy(int x, int y)
 {
@@ -15,21 +11,53 @@ void gotoxy(int x, int y)
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
 }
 
-int main()
+void draw_ship(int x, int y)
 {
-    gotoxy(10, 5);
-    draw_ship();
-    //std::cout << "Hello World!\n";
-    return 0;
+    gotoxy(x,y);
+    std::cout<<("<=o=>");
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+void erase_ship(int x, int y) 
+{
+    gotoxy(x,y);
+    std::cout << ("     ");
+}
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+int main()
+{
+    char ch = ' ';
+    int x = 38, y = 20;
+    draw_ship(x, y);
+    do {
+        if (_kbhit()) {
+            ch = _getch();
+            if (ch == 'a') {
+                if (x > 0) {
+                    erase_ship(x, y);
+                    draw_ship(--x, y);
+                }
+            }
+            if (ch == 'd') {
+                if (x < 75) {
+                    erase_ship(x, y);
+                    draw_ship(++x, y);
+                }
+            }
+            if (ch == 'w') {
+                if (y > 0) {
+                    erase_ship(x, y);
+                    draw_ship(x, --y);
+                }
+            }
+            if (ch == 's') {
+                if (y < 25) {
+                    erase_ship(x, y);
+                    draw_ship(x, ++y);
+                }
+            }
+            fflush(stdin);
+        }
+        Sleep(100);
+    } while (ch != 'x');
+    return 0;
+}
